@@ -1,15 +1,16 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+import Layout from '@components/Layout'
+import { useGetLaunches } from '@hooks/launches/useGetLaunhces'
+import LaunchesGrid from '@components/LaunchGrid'
+
+const IndexPage: React.FC = () => {
+  const launches = useGetLaunches()
+
+  return (
+    <Layout title='Home | Archie Test | Space-X launches'>
+      <LaunchesGrid launches={ launches || []} />
+    </Layout>
+  )
+}
 
 export default IndexPage
