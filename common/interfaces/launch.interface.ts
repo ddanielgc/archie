@@ -7,6 +7,7 @@ export interface ILaunch {
   links: {
     mission_patch: string
     mission_patch_small: string
+    article_link: string
   },
   details: string
 }

@@ -3,6 +3,6 @@ module.exports = {
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
     loader: "default",
-    domains: ["images2.imgbox.com"],
+    domains: ["images2.imgbox.com", "i.imgur.com", "imgur.com"],
   },
 }

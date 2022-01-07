@@ -1,5 +1,6 @@
 import { ILaunch } from '@common/interfaces/launch.interface'
-import { Box } from '@chakra-ui/react'
+import { Box, Link } from '@chakra-ui/react'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 import Image from 'next/image'
 
 interface ILaunchCardProps {
@@ -9,7 +10,7 @@ interface ILaunchCardProps {
 const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
   return (
       <Box 
-        key={launch.id} 
+        key={launch?.id} 
         maxW='sm'
         borderRadius='lg' 
         overflow='hidden' 
@@ -25,23 +26,30 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
           paddingTop={'10px'}
         >
           <Image
-            src={launch.links.mission_patch} 
+            src={launch?.links?.mission_patch} 
             width={200}
             height={200}
-            alt={launch.mission_name}
+            alt={launch?.mission_name}
           />
         </Box>
         <Box p='2'>
-          <Box
-            mt='1'
-            fontWeight='semibold'
-            as='h4'
-            lineHeight='tight'
-            isTruncated
-          >
-            {launch.mission_name}
+          <Box display='flex' alignItems='flex-start' justifyContent='space-between'>
+            <Box
+              mt='1'
+              fontWeight='semibold'
+              as='h4'
+              lineHeight='tight'
+              isTruncated={true}
+            >
+              {launch?.mission_name}
+            </Box>
+            <Link href={launch?.links?.article_link}  isExternal>
+              <ExternalLinkIcon mx='2px' />
+            </Link>
           </Box>
-          <h5>{launch.rocket.rocket_name}</h5>
+          <Box as='span' ml='2' color='gray.600' fontSize='sm' textAlign='left' >
+            {launch?.rocket?.rocket_name}
+          </Box>
           <Box
             mt='1'
             fontWeight='bold'
@@ -49,7 +57,7 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
             lineHeight='tight'
             isTruncated={true}
           >
-            {launch.details}
+            {launch?.details || 'No details available'}
           </Box>
         </Box>
       </Box>
