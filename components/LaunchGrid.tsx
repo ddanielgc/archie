@@ -16,7 +16,6 @@ const LaunchesGrid: React.FC<ILaunchGridProps> = ({ launches, loading }: ILaunch
       marginBottom={'40px'}
       p={'50px'}
       bg='gray.50'
-      textAlign='center'
       rounded='lg'
       color='gray.400'
     >

@@ -32,7 +32,7 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
             alt={launch?.mission_name}
           />
         </Box>
-        <Box p='2'>
+        <Box p='2' alignItems='baseline'>
           <Box display='flex' alignItems='flex-start' justifyContent='space-between'>
             <Box
               mt='1'
@@ -47,7 +47,7 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
               <ExternalLinkIcon mx='2px' />
             </Link>
           </Box>
-          <Box as='span' ml='2' color='gray.600' fontSize='sm' textAlign='left' >
+          <Box as='span' ml='2' color='gray.600' fontSize='sm'>
             {launch?.rocket?.rocket_name}
           </Box>
           <Box
