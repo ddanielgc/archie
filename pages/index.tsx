@@ -5,7 +5,18 @@ import { useLazyQuery } from '@apollo/client'
 import { SEARCH_LAUNCHES } from '@services/launches/searchLaunches'
 import LaunchesGrid from '@components/LaunchGrid'
 import { useEffect, useState } from 'react' 
-import { InputGroup, Input, InputLeftElement, Box } from '@chakra-ui/react'
+import { 
+  Heading,
+  Box,
+  InputGroup,
+  Input,
+  InputLeftElement,
+  Divider,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription
+} from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { ILaunch } from '@common/interfaces/launch.interface'
 
@@ -39,17 +50,27 @@ const IndexPage: React.FC<ILaunchProps> = ({ staticLaunches }: ILaunchProps) => 
     setIsFirstLoad(false)
   }, [])
 
-  if (error) return <Box children='error' />
+  if (error) return (
+    <Alert status='error'>
+      <AlertIcon />
+      <AlertTitle mr={2}>Error!</AlertTitle>
+      <AlertDescription>{ error?.message }</AlertDescription>
+    </Alert>
+  )
 
   return (
     <Layout title='Home | Archie Test | Space-X launches'>
+      <Heading as='h4' size='xl' isTruncated color='black' marginLeft={'40px'} marginTop={'20px'}>
+        Space-X launches
+      </Heading>
       <Box maxW='lg' mx='auto' p={4}>
         <InputGroup>
-          <InputLeftElement pointerEvents='none' children={<SearchIcon color='gray.300' />}/>
-          <Input onChange={(event) => setSearch(event.target.value)} variant='filled' placeholder='Search' value={search}/>
+          <InputLeftElement pointerEvents='none' children={ <SearchIcon color='gray.500' /> } />
+          <Input onChange={(event) => setSearch(event.target.value)} variant='filled' placeholder='Search' value={ search } />
         </InputGroup>
       </Box>
-      <LaunchesGrid launches={ launches || []} loading={loading} />
+      <Divider />
+      <LaunchesGrid launches={ launches || []} loading={ loading } />
     </Layout>
   )
 }
