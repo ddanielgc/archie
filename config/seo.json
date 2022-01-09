@@ -1,0 +1,26 @@
+{
+  "title": "SpaceX Launches",
+  "titleTemplate": "%s - SpaceX Launches",
+  "description": "SpaceX Launches",
+  "openGraph": {
+    "title": "SpaceX Launches",
+    "description": "SpaceX Launches",
+    "type": "website",
+    "locale": "en_IE",
+    "url": "https://archie-peach.vercel.app/",
+    "site_name": "SpaceX Launches",
+    "images": [
+      {
+        "url": "/spacex-launches.png",
+        "width": 902,
+        "height": 902,
+        "alt": "SpaceX Launches"
+      }
+    ]
+  },
+  "twitter": {
+    "handle": "@Spacexlaunches",
+    "site": "@Spacexlaunches",
+    "cardType": "summary_large_image"
+  }
+}

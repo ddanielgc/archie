@@ -15,6 +15,7 @@
     "framer-motion": "^5",
     "graphql": "^16.2.0",
     "next": "latest",
+    "next-seo": "^4.28.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-infinite-scroll-component": "^6.1.0"
@@ -35,6 +36,9 @@
       ],
       "@graphql/*": [
         "graphql/*"
+      ],
+      "@config/*": [
+        "config/*"
       ]
     },
     "debug": true,
