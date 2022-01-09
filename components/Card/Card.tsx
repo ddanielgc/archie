@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ILaunch } from '@common/interfaces/launch.interface'
-import { Box, Link, Center, Tooltip, Text, Image, Heading } from '@chakra-ui/react'
+import { Box, Link, Center, Tooltip, Text, Image, Heading, useMediaQuery } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
 interface ILaunchCardProps {
@@ -9,6 +9,7 @@ interface ILaunchCardProps {
 
 const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
   const [isLabelOpen, setIsLabelOpen] = useState(false)
+  const [isMobile] = useMediaQuery('(max-width: 768px)')
 
   return (
       <Box
@@ -28,7 +29,7 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
         >
           <Center p={2}>
             <Image
-              src={ launch?.links?.mission_patch } 
+              src={ isMobile ? launch?.links?.mission_patch_small : launch?.links?.mission_patch }
               width={200}
               height={200}
               alt={ launch?.mission_name }
@@ -73,7 +74,7 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
               noOfLines={[3, 4, 5]}
               onMouseEnter={() => setIsLabelOpen(true)}
               onMouseLeave={() => setIsLabelOpen(false)}
-              onClick={() => setIsLabelOpen(!isLabelOpen)}
+              onClick={() => setIsLabelOpen(true)}
             >
               { launch?.details || 'No details available' }
             </Text>
