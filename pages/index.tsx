@@ -2,7 +2,7 @@
 import Layout from '@components/Layout'
 import client from '@common/apollo-client'
 import { useLazyQuery } from '@apollo/client'
-import { SEARCH_LAUNCHES } from '@services/launches/searchLaunches'
+import { SEARCH_LAUNCHES } from 'graphql/launches/searchLaunches'
 import LaunchesGrid from '@components/LaunchGrid'
 import { useEffect, useState } from 'react' 
 import { 
@@ -21,7 +21,8 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { ILaunch } from '@common/interfaces/launch.interface'
 
 const paginationDefault = {
-  limit: 20
+  limit: 20,
+  max: 100
 }
 interface ILaunchProps {
   staticLaunches: ILaunch[]
@@ -30,25 +31,49 @@ interface ILaunchProps {
 const IndexPage: React.FC<ILaunchProps> = ({ staticLaunches }: ILaunchProps) => {
   const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [search, setSearch] = useState('')
-  const [launches, setLaunches] = useState(staticLaunches)
-  const [executeSearch, { data: searchLaunches, loading, error }] = useLazyQuery(SEARCH_LAUNCHES)
-
+  const [launches, setLaunches] = useState<ILaunch[] | [null]>(staticLaunches)
+  const [hasMore, setHasMore] = useState(true)
+  const [executeSearch, { loading, error }] = useLazyQuery(SEARCH_LAUNCHES, {
+    onCompleted: (data) => {
+      if (launches?.length < paginationDefault.max) {
+        setLaunches([...launches, ...data?.launches])
+      } else { 
+        setHasMore(false)
+      }
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+  })
+  
   useEffect(() => {
     if (!isFirstLoad) {
+      setLaunches([])
+      setHasMore(true)
+
       executeSearch({
-        variables: { 
+        variables: {
           searchTerm: search,
           limit: paginationDefault.limit,
           offset: 0
         }
       })
-      setLaunches(searchLaunches?.launches)
     }
   }, [search])
 
   useEffect(() => {
     setIsFirstLoad(false)
   }, [])
+
+  const fetchLaunches = () => {
+    executeSearch({
+      variables: { 
+        searchTerm:  search,
+        limit: paginationDefault.limit,
+        offset: launches?.length
+      }
+    })
+  }
 
   if (error) return (
     <Alert status='error'>
@@ -70,7 +95,7 @@ const IndexPage: React.FC<ILaunchProps> = ({ staticLaunches }: ILaunchProps) => 
         </InputGroup>
       </Box>
       <Divider />
-      <LaunchesGrid launches={ launches || []} loading={ loading } />
+      <LaunchesGrid launches={ launches || []} loading={ loading } getMoreLaunches={ fetchLaunches } hasMore={ hasMore } />
     </Layout>
   )
 }

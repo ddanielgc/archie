@@ -16,7 +16,8 @@
     "graphql": "^16.2.0",
     "next": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-infinite-scroll-component": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
@@ -32,15 +33,15 @@
       "@components/*": [
         "components/*"
       ],
-      "@services/*": [
-        "services/*"
+      "@graphql/*": [
+        "graphql/*"
       ]
     },
     "debug": true,
     "include": [
       "common",
       "components",
-      "services"
+      "graphql"
     ],
     "exclude": [],
     "entrypoints": [

@@ -17,7 +17,7 @@
     "paths": {
       "@common/*": ["common/*"],
       "@components/*": ["components/*"],
-      "@services/*": ["services/*"]
+      "@graphql/*": ["graphql/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

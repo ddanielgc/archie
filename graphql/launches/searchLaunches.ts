@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const SEARCH_LAUNCHES = gql`
   query GetLaunches($searchTerm: String!, $limit: Int!, $offset: Int!) {
-    launches(find: {mission_name: $searchTerm}, limit: $limit, offset: $offset) {
+    launches(find: {mission_name: $searchTerm}, limit: $limit, offset: $offset, sort: "launch_date_utc") {
       id
       mission_name
       rocket {
@@ -14,6 +14,7 @@ export const SEARCH_LAUNCHES = gql`
         article_link
       }
       details
+      launch_date_utc
     }
   }
 `

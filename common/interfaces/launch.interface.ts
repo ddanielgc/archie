@@ -10,4 +10,5 @@ export interface ILaunch {
     article_link: string
   },
   details: string
+  launch_date_utc: string
 }
