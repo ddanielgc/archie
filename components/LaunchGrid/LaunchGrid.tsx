@@ -1,7 +1,8 @@
 import { SimpleGrid, Skeleton, Center, Text } from '@chakra-ui/react'
-import Card from '@components/Card'
+import { Card } from '@components/index'
 import { ILaunch } from '@common/interfaces/launch.interface'
 import InfiniteScroll from 'react-infinite-scroll-component'
+
 interface ILaunchGridProps {
   launches: ILaunch[]
   loading: boolean
@@ -9,7 +10,7 @@ interface ILaunchGridProps {
   getMoreLaunches: () => void
 }
 
-const LaunchesGrid: React.FC<ILaunchGridProps> = ({ launches, loading, hasMore, getMoreLaunches }: ILaunchGridProps) => {
+const LaunchGrid: React.FC<ILaunchGridProps> = ({ launches, loading, hasMore, getMoreLaunches }: ILaunchGridProps) => {
 
   return (
     <InfiniteScroll
@@ -21,12 +22,15 @@ const LaunchesGrid: React.FC<ILaunchGridProps> = ({ launches, loading, hasMore, 
           <Skeleton height='40px' />
         </Center>
       }
-      endMessage={ <Center p={2}><Text>No more launches to load</Text></Center> }
+      endMessage={ 
+        <Center paddingBottom={20}>
+          <Text fontSize={'3xl'}>No more launches to load</Text>
+        </Center>
+      }
     >
       <SimpleGrid 
         minChildWidth={'250px'}
         spacing={'40px'}
-        marginTop={'40px'}
         marginBottom={'40px'}
         p={'50px'}
         bg='gray.50'
@@ -43,4 +47,4 @@ const LaunchesGrid: React.FC<ILaunchGridProps> = ({ launches, loading, hasMore, 
   )
 }
 
-export default LaunchesGrid
+export default LaunchGrid

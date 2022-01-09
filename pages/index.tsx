@@ -1,12 +1,10 @@
 
-import Layout from '@components/Layout'
+import { useState } from 'react' 
+import { Layout, LaunchGrid } from '@components/index'
 import client from '@common/apollo-client'
 import { useLazyQuery } from '@apollo/client'
 import { SEARCH_LAUNCHES } from 'graphql/launches/searchLaunches'
-import LaunchesGrid from '@components/LaunchGrid'
-import { useEffect, useState } from 'react' 
-import { 
-  Heading,
+import {
   Box,
   InputGroup,
   Input,
@@ -15,21 +13,20 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription
+  AlertDescription,
+  Button,
+  Text,
+  useTheme
 } from '@chakra-ui/react'
-import { SearchIcon } from '@chakra-ui/icons'
+import { SearchIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { ILaunch } from '@common/interfaces/launch.interface'
-
-const paginationDefault = {
-  limit: 20,
-  max: 100
-}
+import { paginationDefault } from '@config/application'
 interface ILaunchProps {
   staticLaunches: ILaunch[]
 }
 
 const IndexPage: React.FC<ILaunchProps> = ({ staticLaunches }: ILaunchProps) => {
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
+  const theme = useTheme()
   const [search, setSearch] = useState('')
   const [launches, setLaunches] = useState<ILaunch[] | [null]>(staticLaunches)
   const [hasMore, setHasMore] = useState(true)
@@ -42,28 +39,22 @@ const IndexPage: React.FC<ILaunchProps> = ({ staticLaunches }: ILaunchProps) => 
       }
     },
     onError: (error) => {
-      console.log(error)
+      console.log('🚀 ~ error', error)
     }
   })
   
-  useEffect(() => {
-    if (!isFirstLoad) {
-      setLaunches([])
-      setHasMore(true)
+  const searchLaunches = () => {
+    setLaunches([])
+    setHasMore(true)
 
-      executeSearch({
-        variables: {
-          searchTerm: search,
-          limit: paginationDefault.limit,
-          offset: 0
-        }
-      })
-    }
-  }, [search])
-
-  useEffect(() => {
-    setIsFirstLoad(false)
-  }, [])
+    executeSearch({
+      variables: {
+        searchTerm: search,
+        limit: paginationDefault.limit,
+        offset: 0
+      }
+    })
+  }
 
   const fetchLaunches = () => {
     executeSearch({
@@ -84,18 +75,35 @@ const IndexPage: React.FC<ILaunchProps> = ({ staticLaunches }: ILaunchProps) => 
   )
 
   return (
-    <Layout title='Home | Archie Test | Space-X launches'>
-      <Heading as='h4' size='xl' isTruncated color='black' marginLeft={'40px'} marginTop={'20px'}>
-        Space-X launches
-      </Heading>
-      <Box maxW='lg' mx='auto' p={4}>
+    <Layout>
+      <Box display='flex' alignItems='flex-start' maxW='lg' mx='auto' p={4} marginTop={10}>
         <InputGroup>
           <InputLeftElement pointerEvents='none' children={ <SearchIcon color='gray.500' /> } />
-          <Input onChange={(event) => setSearch(event.target.value)} variant='filled' placeholder='Search' value={ search } />
+          <Input 
+            onChange={(event) => setSearch(event.target.value)} 
+            onKeyPress={e=> {
+              if (e.key === 'Enter') searchLaunches()
+            }} 
+            variant='outline'
+            placeholder='Search'
+            value={ search }
+            borderColor={ theme.colors.gray[900] }
+          />
         </InputGroup>
+        <Button 
+          variant='outline'
+          marginLeft={2}
+          onClick={ searchLaunches }
+          isLoading={ loading }
+          bg='black'
+          rightIcon={ <ArrowForwardIcon color='white' /> }
+          _hover={ { bg: theme.colors.gray[500] } }
+        >
+          <Text fontSize='sm' color='white'>Search</Text>
+        </Button>
       </Box>
       <Divider />
-      <LaunchesGrid launches={ launches || []} loading={ loading } getMoreLaunches={ fetchLaunches } hasMore={ hasMore } />
+      <LaunchGrid launches={ launches || []} loading={ loading } getMoreLaunches={ fetchLaunches } hasMore={ hasMore } />
     </Layout>
   )
 }
