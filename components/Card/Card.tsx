@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { ILaunch } from '@common/interfaces/launch.interface'
-import { Box, Link, Center, Tooltip, Text, Image, Heading, useMediaQuery } from '@chakra-ui/react'
+import { Box, Link, Center, Tooltip, Text, Heading, useMediaQuery, Skeleton } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+import Image from 'next/image'
 
 interface ILaunchCardProps {
   launch: ILaunch
@@ -9,6 +10,7 @@ interface ILaunchCardProps {
 
 const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
   const [isLabelOpen, setIsLabelOpen] = useState(false)
+  const [isLoadingImage, setIsLoadingImage] = useState(true)
   const [isMobile] = useMediaQuery('(max-width: 768px)')
 
   return (
@@ -28,14 +30,16 @@ const Card: React.FC<ILaunchCardProps> = ({ launch }: ILaunchCardProps) => {
           bg='gray.400'
         >
           <Center p={2}>
-            <Image
-              src={ isMobile ? launch?.links?.mission_patch_small : launch?.links?.mission_patch }
-              width={200}
-              height={200}
-              alt={ launch?.mission_name }
-              fallbackSrc='https://via.placeholder.com/200'
-              loading='lazy'
-            />
+            <Skeleton isLoaded={ !isLoadingImage }>
+              <Image
+                src={ isMobile ? launch?.links?.mission_patch_small : launch?.links?.mission_patch }
+                width={200}
+                height={200}
+                alt={ launch?.mission_name }
+                loading='eager'
+                onLoadingComplete={ () => setIsLoadingImage(false) }
+              />
+            </Skeleton>
           </Center>
         </Box>
         <Box p='2' alignItems='baseline'>
